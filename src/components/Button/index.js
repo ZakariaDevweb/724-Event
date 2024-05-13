@@ -15,7 +15,7 @@ const Button = ({ title, onClick, type, disabled, children }) => {
           type="button"
           disabled={disabled}
           className="Button"
-          data-testid="button-test-id"
+          data-testid="button-testid"
           onClick={onClick}
           title={title}
         >
@@ -28,7 +28,7 @@ const Button = ({ title, onClick, type, disabled, children }) => {
           disabled={disabled}
           className="Button"
           type="submit"
-          data-testid="button-test-id"
+          data-testid="button-testid"
           value={children}
           onClick={onClick}
           title={title}
@@ -40,7 +40,7 @@ const Button = ({ title, onClick, type, disabled, children }) => {
           type="button"
           disabled={disabled}
           className="Button"
-          data-testid="button-test-id"
+          data-testid="button-testid"
           onClick={onClick}
           title={title}
         >
