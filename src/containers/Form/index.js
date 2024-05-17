@@ -8,96 +8,45 @@ const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 500)
 
 const Form = ({ onSuccess, onError }) => {
   const [sending, setSending] = useState(false);
-  const [formData, setFormData] = useState({
-    nom: "",
-    prenom: "",
-    type: "",
-    email: "",
-    message: ""
-  });
-
   const sendContact = useCallback(
     async (evt) => {
       evt.preventDefault();
-
-      // Vérifier si tous les champs requis sont remplis
-      if (
-        !formData.nom ||
-        !formData.prenom ||
-        !formData.type ||
-        !formData.email ||
-        !formData.message
-      ) {
-        onError(new Error("Veuillez remplir tous les champs obligatoires"));
-        return;
-      }
-
       setSending(true);
-      // Nous essayons d'appeler mockContactApi
+      // We try to call mockContactApi
       try {
         await mockContactApi();
         setSending(false);
-        onSuccess(); // Appeler onSuccess ici
+        onSuccess(); // Call onSuccess here
       } catch (err) {
         setSending(false);
         onError(err);
       }
     },
-    [formData, onSuccess, onError]
+    [onSuccess, onError]
   );
-
-  const handleChange = (field, value) => {
-    setFormData({
-      ...formData,
-      [field]: value
-    });
-  };
-
   return (
     <form onSubmit={sendContact}>
       <div className="row">
         <div className="col">
-          <Field
-            placeholder=""
-            required
-            label="Nom"
-            value={formData.nom}
-            onChange={(value) => handleChange("nom", value)}
-          />
-          <Field
-            placeholder=""
-            required
-            label="Prénom"
-            value={formData.prenom}
-            onChange={(value) => handleChange("prenom", value)}
-          />
-          <Select
-            required
-            selection={["Personnel", "Entreprise"]}
-            onChange={(value) => handleChange("type", value)}
-            label="Personnel / Entreprise"
+          <Field placeholder="" required  label="Nom" />
+          <Field placeholder=""  required label="Prénom" />
+          <Select  required
+            selection={["Personel", "Entreprise"]}
+            onChange={() => null}
+            label="Personel / Entreprise"
             type="large"
             titleEmpty
           />
-          <Field
-            placeholder=""
-            required
-            label="Email"
-            value={formData.email}
-            onChange={(value) => handleChange("email", value)}
-          />
+          <Field placeholder="" required label="Email" />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
             {sending ? "En cours" : "Envoyer"}
           </Button>
         </div>
         <div className="col">
-          <Field
-            required
+          <Field required
             placeholder="message"
             label="Message"
             type={FIELD_TYPES.TEXTAREA}
-            value={formData.message}
-            onChange={(value) => handleChange("message", value)}
           />
         </div>
       </div>
