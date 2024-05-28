@@ -18,7 +18,9 @@ const EventList = () => {
     (!type
       ? data?.events
       : // Ajout filter en fonction du type
-        data?.events.filter((event) => event.type === type)) || []
+        data?.events.filter((event) => event.type === type).sort((evtA, evtB) =>
+          new Date(evtB.date) > new Date(evtA.date) ? 1 : -1
+        )) || []
   ).filter((event, index) => {
     if (
       (currentPage - 1) * PER_PAGE <= index &&
@@ -28,7 +30,9 @@ const EventList = () => {
     }
 
     return false;
-  });
+  }).sort((evtA, evtB) =>
+    new Date(evtB.date) > new Date(evtA.date) ? 1 : -1
+  );
 
   const changeType = (evtType) => {
     setCurrentPage(1);
