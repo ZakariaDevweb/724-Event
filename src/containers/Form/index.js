@@ -9,6 +9,7 @@ const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 500)
 const Form = ({ onSuccess, onError }) => {
   const [sending, setSending] = useState(false);
   const [formData, setFormData] = useState({
+  
     nom: "",
     prenom: "",
     type: "",
@@ -16,9 +17,9 @@ const Form = ({ onSuccess, onError }) => {
     message: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const handleChange = (selectedOption) => {
+    setFormData((prevData) => ({ ...prevData, type: selectedOption.value }));
+  
   };
 
   const sendContact = useCallback(
@@ -56,7 +57,7 @@ const Form = ({ onSuccess, onError }) => {
             type="text"
             name="nom"
             value={formData.nom}
-            onChange={handleChange}
+            onChange={() => null}
           />
           <Field
             placeholder=""
@@ -65,18 +66,19 @@ const Form = ({ onSuccess, onError }) => {
             type="text"
             name="prenom"
             value={formData.prenom}
-            onChange={handleChange}
+            onChange={() => null}
           />
-          <Select
-            required
-            selection={["Personel", "Entreprise"]}
-            onChange={(e) => handleChange({ target: { name: "type", value: e.target.value } })}
-            label="Personel / Entreprise"
-            type="large"
-            titleEmpty
-            name="type"
-            value={formData.type}
-          />
+         
+<Select
+  required
+  selection={["Personel", "Entreprise"]}
+  onChange={handleChange} 
+  label="Personel / Entreprise"
+  type="large"
+  titleEmpty
+  name="type"
+  value={formData.type} 
+/>
           <Field
             placeholder=""
             required
@@ -84,7 +86,7 @@ const Form = ({ onSuccess, onError }) => {
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={() => null}
           />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
             {sending ? "En cours" : "Envoyer"}
