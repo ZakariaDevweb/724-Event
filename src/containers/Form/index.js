@@ -9,7 +9,6 @@ const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 500)
 const Form = ({ onSuccess, onError }) => {
   const [sending, setSending] = useState(false);
   const [formData, setFormData] = useState({
-  
     nom: "",
     prenom: "",
     type: "",
@@ -17,16 +16,20 @@ const Form = ({ onSuccess, onError }) => {
     message: "",
   });
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSelectChange = (selectedOption) => {
     setFormData((prevData) => ({ ...prevData, type: selectedOption.value }));
-  
   };
 
   const sendContact = useCallback(
     async (evt) => {
       evt.preventDefault();
       
-      // verification de validation de formulaire
+      // vérification de validation de formulaire
       const form = evt.target;
       if (!form.checkValidity()) {
         form.reportValidity();
@@ -57,7 +60,7 @@ const Form = ({ onSuccess, onError }) => {
             type="text"
             name="nom"
             value={formData.nom}
-            onChange={() => null}
+            onChange={handleChange}
           />
           <Field
             placeholder=""
@@ -66,19 +69,18 @@ const Form = ({ onSuccess, onError }) => {
             type="text"
             name="prenom"
             value={formData.prenom}
-            onChange={() => null}
+            onChange={handleChange}
           />
-         
-<Select
-  required
-  selection={["Personel", "Entreprise"]}
-  onChange={handleChange} 
-  label="Personel / Entreprise"
-  type="large"
-  titleEmpty
-  name="type"
-  value={formData.type} 
-/>
+          <Select
+            required
+            selection={["Personel", "Entreprise"]}
+            onChange={handleSelectChange} 
+            label="Personel / Entreprise"
+            type="large"
+            titleEmpty
+            name="type"
+            value={formData.type} 
+          />
           <Field
             placeholder=""
             required
@@ -86,7 +88,7 @@ const Form = ({ onSuccess, onError }) => {
             type="email"
             name="email"
             value={formData.email}
-            onChange={() => null}
+            onChange={handleChange}
           />
           <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
             {sending ? "En cours" : "Envoyer"}
